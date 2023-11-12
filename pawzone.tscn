@@ -1,0 +1,85 @@
+[gd_scene load_steps=14 format=3 uid="uid://5d7gowjxppnx"]
+
+[ext_resource type="Script" path="res://pawzone.gd" id="1_5k4au"]
+[ext_resource type="Texture2D" uid="uid://ubwtit8c4uq3" path="res://grass.png" id="1_aki0f"]
+[ext_resource type="Script" path="res://pawvlo.gd" id="1_m3d72"]
+[ext_resource type="PackedScene" uid="uid://ghwiup2dc8v3" path="res://lul_dog.tscn" id="3_ebroc"]
+[ext_resource type="Texture2D" uid="uid://h0pcr4cdofa7" path="res://alpinish-hdri.png" id="3_rh2k6"]
+[ext_resource type="Script" path="res://pawsed.gd" id="4_jjrdt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sx43t"]
+size = Vector3(128.241, 0.0963379, 127.234)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cytul"]
+albedo_texture = ExtResource("1_aki0f")
+normal_enabled = true
+normal_texture = ExtResource("1_aki0f")
+uv1_scale = Vector3(33, 33, 33)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1onig"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ir1q"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.721569)
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_0m8cm"]
+panorama = ExtResource("3_rh2k6")
+
+[sub_resource type="Sky" id="Sky_nu2ll"]
+sky_material = SubResource("PanoramaSkyMaterial_0m8cm")
+
+[sub_resource type="Environment" id="Environment_tjh5x"]
+background_mode = 2
+background_energy_multiplier = 0.5
+sky = SubResource("Sky_nu2ll")
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.0
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+glow_intensity = 1.1
+glow_blend_mode = 0
+
+[node name="Pawzone" type="Node3D"]
+script = ExtResource("1_5k4au")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_sx43t")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor"]
+size = Vector3(128.288, 0.0788374, 127.569)
+material = SubResource("StandardMaterial3D_cytul")
+
+[node name="Dawg" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.553744, 0)
+script = ExtResource("1_m3d72")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Dawg"]
+shape = SubResource("BoxShape3D_1onig")
+
+[node name="Camera3D" type="Camera3D" parent="Dawg"]
+transform = Transform3D(-4.37114e-08, 0.377841, -0.925871, 0, 0.925871, 0.377841, 1, 1.65159e-08, -4.04711e-08, -3.79909, 2.19993, 0)
+
+[node name="Pawsed" type="CSGBox3D" parent="Dawg/Camera3D"]
+process_mode = 3
+transform = Transform3D(1, 0, 2.4869e-14, 0, 1, -6.68418e-16, 0, -6.68419e-16, 1, -7.31675e-08, -0.0174538, -1.81502)
+visible = false
+size = Vector3(4.99047, 3.03523, 0.0353936)
+material = SubResource("StandardMaterial3D_4ir1q")
+script = ExtResource("4_jjrdt")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Dawg"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42836, 1.46627, -0.448643)
+shadow_enabled = true
+shadow_opacity = 0.61
+omni_range = 50.5429
+
+[node name="lul-dog" parent="Dawg" instance=ExtResource("3_ebroc")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.113258, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tjh5x")
